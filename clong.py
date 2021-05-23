@@ -11,13 +11,20 @@ with open('./data2/driving_log.csv') as csvfile:
 images =[]
 measurements = []
 for line in lines:
-    source_path = line[0]
-    filename=source_path.split('/')[-1]
-    current_path = './data2/IMG/' + filename
-    image =cv2.imread(current_path)
-    images.append(image)
-    measurement = float(line[3])
-    measurements.append(measurement)
+    for i in range(3):
+        source_path = line[i]
+        filename=source_path.split('/')[-1]
+        current_path = './data2/IMG/' + filename
+        image =cv2.imread(current_path)
+        images.append(image)
+        measurement = float(line[3])
+        if i==0:
+            measurements.append(measurement)
+        elif i==1:
+            measurements.append(measurement+0.1)
+        else:
+            measurements.append(measurement-0.1)
+
 augmented_images, augmented_measurements =[],[]
 for image,measurement in zip(images,measurements):
     augmented_images.append(image)
