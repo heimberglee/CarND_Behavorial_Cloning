@@ -77,11 +77,20 @@ model.add(Dense(1))
 model.compile(loss='mse',optimizer='adam')
 #model.fit(X_train, y_train, batch_size=128, validation_split=0.2, shuffle=True, nb_epoch = 6)
 
-model.fit_generator(train_generator,
+history_object = model.fit_generator(train_generator,
             steps_per_epoch=ceil(len(train_samples)/batch_size),
             validation_data=validation_generator,
             validation_steps=ceil(len(validation_samples)/batch_size),
-            epochs=5)
+            epochs=12)
 
 model.save('model.h5')
-    
+
+print(history_object.history.keys())
+import matplotlib.pyplot as plt
+plt.plot(history_object.history['loss'])
+plt.plot(history_object.history['val_loss'])
+plt.title('model mean squared error loss')
+plt.ylabel('mean squared error loss')
+plt.xlabel('epoch')
+plt.legend(['training set', 'validation set'], loc='upper right')
+plt.savefig('./result_image.png')
